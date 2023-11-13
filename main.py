@@ -1,9 +1,14 @@
 import pygame
 import sys
 from balloon import Balloon
+from sound import SoundManager, SOUND_CORRECT, SOUND_WRONG
+
+
 
 def run_game():
     pygame.init()
+    SoundManager.load_sound(SOUND_CORRECT, 'resource/correct.wav')
+    SoundManager.load_sound(SOUND_WRONG, 'resource/wrong.wav')
 
     # Constants for the game
     SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
@@ -23,15 +28,20 @@ def run_game():
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN:
+                if event.key in [pygame.K_RETURN, pygame.K_KP_ENTER]:
                     # Check user's answer and pop balloon if correct
+                    isAnyCorrect = False
                     for balloon in balloons:
                         if balloon.check_answer(int(user_answer)):
+                            SoundManager.play_sound(SOUND_CORRECT)
                             balloons.remove(balloon)
                             balloons.append(Balloon())
                             score += 1
+                            isAnyCorrect = True
                             break
                     user_answer = ""
+                    if not isAnyCorrect:
+                        SoundManager.play_sound(SOUND_WRONG)
                 elif event.key == pygame.K_BACKSPACE:
                     user_answer = user_answer[:-1]
                 else:

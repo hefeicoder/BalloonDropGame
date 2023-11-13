@@ -1,5 +1,6 @@
 import pygame
 import random
+from pygame import mixer
 from question_set import question_addition_within_twenty
 
 class Balloon:
