@@ -6,6 +6,7 @@ pygame.mixer.init()
 
 SOUND_CORRECT = 'sound_correct'
 SOUND_WRONG = 'sound_wrong'
+SOUND_GREAT = 'sound_guaguagua'
 
 class SoundManager:
     sounds = {}  # Dictionary to store loaded sounds

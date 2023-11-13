@@ -1,10 +1,12 @@
 import pygame
 import sys
 from balloon import Balloon
-from sound import SoundManager, SOUND_CORRECT, SOUND_WRONG
+from sound import SoundManager, SOUND_CORRECT, SOUND_WRONG, SOUND_GREAT
 
 WINDOW_WIDTH = 1024
 WINDOW_HEIGHT = 1024
+
+BALLOON_NUM = 2
 
 def run_game():
     pygame.init()
@@ -12,6 +14,8 @@ def run_game():
     # Resources
     SoundManager.load_sound(SOUND_CORRECT, 'resource/correct.wav')
     SoundManager.load_sound(SOUND_WRONG, 'resource/wrong.wav')
+    SoundManager.load_sound(SOUND_GREAT, 'resource/guaguagua.wav')
+
     # Load the background image
     background_image = pygame.image.load('resource/background.png')
     background_image = pygame.transform.scale(background_image, (WINDOW_WIDTH, WINDOW_HEIGHT))  # Resize to fit your window
@@ -23,7 +27,7 @@ def run_game():
     pygame.display.set_caption('Math Balloon Pop Game')
 
     # Create a list of balloons
-    balloons = [Balloon() for _ in range(1)]
+    balloons = [Balloon() for _ in range(BALLOON_NUM)]
     user_answer = ""  # To store user's current input
     score = 0  # Player's score
 
@@ -38,10 +42,13 @@ def run_game():
                     isAnyCorrect = False
                     for balloon in balloons:
                         if balloon.check_answer(int(user_answer)):
-                            SoundManager.play_sound(SOUND_CORRECT)
+                            score += 1
+                            if score % 5 == 0:
+                                SoundManager.play_sound(SOUND_GREAT)
+                            else:
+                                SoundManager.play_sound(SOUND_CORRECT)
                             balloons.remove(balloon)
                             balloons.append(Balloon())
-                            score += 1
                             isAnyCorrect = True
                             break
                     user_answer = ""
@@ -61,8 +68,6 @@ def run_game():
                 balloons.append(Balloon())  # Add a new balloon
 
         screen.blit(background_image, (0, 0))
-
-        # screen.fill(background_image, (0,0))
 
         # Draw balloons
         for balloon in balloons:
