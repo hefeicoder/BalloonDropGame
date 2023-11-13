@@ -1,20 +1,16 @@
 import pygame
 import sys
 from balloon import Balloon
-from sound import SoundManager, SOUND_CORRECT, SOUND_WRONG, SOUND_GREAT
+from sound import SoundManager, SOUND_CORRECT, SOUND_WRONG, SOUND_GREAT, SOUND_OHNO
 
 WINDOW_WIDTH = 1024
 WINDOW_HEIGHT = 1024
 
-BALLOON_NUM = 2
+BALLOON_NUM = 1
 
 def run_game():
     pygame.init()
-
-    # Resources
-    SoundManager.load_sound(SOUND_CORRECT, 'resource/correct.wav')
-    SoundManager.load_sound(SOUND_WRONG, 'resource/wrong.wav')
-    SoundManager.load_sound(SOUND_GREAT, 'resource/guaguagua.wav')
+    SoundManager.init()
 
     # Load the background image
     background_image = pygame.image.load('resource/background.png')
@@ -64,6 +60,7 @@ def run_game():
             balloon.update()
             # Check if any balloon has reached the bottom
             if balloon.y > SCREEN_HEIGHT:
+                SoundManager.play_sound(SOUND_OHNO)
                 balloons.remove(balloon)
                 balloons.append(Balloon())  # Add a new balloon
 

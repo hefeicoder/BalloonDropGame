@@ -7,9 +7,17 @@ pygame.mixer.init()
 SOUND_CORRECT = 'sound_correct'
 SOUND_WRONG = 'sound_wrong'
 SOUND_GREAT = 'sound_guaguagua'
+SOUND_OHNO = 'sound_ohno'
 
 class SoundManager:
-    sounds = {}  # Dictionary to store loaded sounds
+    sounds = {
+    }  # Dictionary to store loaded sounds
+    @staticmethod
+    def init():
+        SoundManager.load_sound(SOUND_CORRECT, 'resource/correct.wav')
+        SoundManager.load_sound(SOUND_WRONG, 'resource/wrong.wav')
+        SoundManager.load_sound(SOUND_GREAT, 'resource/guaguagua.wav')
+        SoundManager.load_sound(SOUND_OHNO, 'resource/ohno.wav')
 
     @staticmethod
     def load_sound(sound_name, file_path):
