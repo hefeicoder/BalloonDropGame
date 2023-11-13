@@ -3,16 +3,21 @@ import sys
 from balloon import Balloon
 from sound import SoundManager, SOUND_CORRECT, SOUND_WRONG
 
-
+WINDOW_WIDTH = 1024
+WINDOW_HEIGHT = 1024
 
 def run_game():
     pygame.init()
+
+    # Resources
     SoundManager.load_sound(SOUND_CORRECT, 'resource/correct.wav')
     SoundManager.load_sound(SOUND_WRONG, 'resource/wrong.wav')
+    # Load the background image
+    background_image = pygame.image.load('resource/background.png')
+    background_image = pygame.transform.scale(background_image, (WINDOW_WIDTH, WINDOW_HEIGHT))  # Resize to fit your window
 
     # Constants for the game
-    SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
-    BG_COLOR = (255, 255, 255)  # White background
+    SCREEN_WIDTH, SCREEN_HEIGHT = WINDOW_WIDTH, WINDOW_HEIGHT
 
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption('Math Balloon Pop Game')
@@ -52,10 +57,12 @@ def run_game():
             balloon.update()
             # Check if any balloon has reached the bottom
             if balloon.y > SCREEN_HEIGHT:
-                pygame.quit()
-                sys.exit()
+                balloons.remove(balloon)
+                balloons.append(Balloon())  # Add a new balloon
 
-        screen.fill(BG_COLOR)
+        screen.blit(background_image, (0, 0))
+
+        # screen.fill(background_image, (0,0))
 
         # Draw balloons
         for balloon in balloons:
