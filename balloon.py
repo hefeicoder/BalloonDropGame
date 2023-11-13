@@ -8,12 +8,11 @@ class Balloon:
     balloon_image = pygame.image.load('resource/balloon_t2.png')
     balloon_image = pygame.transform.scale(balloon_image, (BALLOON_SIZE, BALLOON_SIZE))  # Resize as needed
 
-    def __init__(self):
+    def __init__(self, gen_func=question_addition_within_twenty):
         self.x = random.randint(50, 750)
         self.y = -Balloon.BALLOON_SIZE  # Start above the screen
-        self.color = (255, 0, 0)  # Red color for the balloon
         self.font = pygame.font.Font(None, 30)
-        self.question, self.answer = question_addition_within_twenty()
+        self.question, self.answer = gen_func()
         self.speed = random.uniform(0.2, 1)  # Speed of the balloon's movement
 
     def generate_problem(self):

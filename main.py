@@ -2,6 +2,7 @@ import pygame
 import sys
 from balloon import Balloon
 from sound import SoundManager, SOUND_CORRECT, SOUND_WRONG, SOUND_GREAT, SOUND_OHNO
+from question_set import question_multiplication_single_digit, question_addition_within_twenty
 
 WINDOW_WIDTH = 1024
 WINDOW_HEIGHT = 1024
@@ -22,8 +23,10 @@ def run_game():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption('Math Balloon Pop Game')
 
+    gen_func = question_multiplication_single_digit
+
     # Create a list of balloons
-    balloons = [Balloon() for _ in range(BALLOON_NUM)]
+    balloons = [Balloon(gen_func) for _ in range(BALLOON_NUM)]
     user_answer = ""  # To store user's current input
     score = 0  # Player's score
 
@@ -44,7 +47,7 @@ def run_game():
                             else:
                                 SoundManager.play_sound(SOUND_CORRECT)
                             balloons.remove(balloon)
-                            balloons.append(Balloon())
+                            balloons.append(Balloon(gen_func))
                             isAnyCorrect = True
                             break
                     user_answer = ""
@@ -62,7 +65,7 @@ def run_game():
             if balloon.y > SCREEN_HEIGHT:
                 SoundManager.play_sound(SOUND_OHNO)
                 balloons.remove(balloon)
-                balloons.append(Balloon())  # Add a new balloon
+                balloons.append(Balloon(gen_func))  # Add a new balloon
 
         screen.blit(background_image, (0, 0))
 
