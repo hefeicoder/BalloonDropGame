@@ -42,13 +42,14 @@ def run_game():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption('Math Balloon Pop Game')
 
-    gen_func = question_addition_within_twenty
+    gen_func = question_multiplication_single_digit
 
 
     # Create a list of balloons
     balloons = [Balloon(gen_func) for _ in range(BALLOON_NUM)]
     user_answer = ""  # To store user's current input
     score = 0  # Player's score
+    missed = 0
 
     arrows = []
 
@@ -73,6 +74,7 @@ def run_game():
                             break
                     user_answer = ""
                     if not isAnyCorrect:
+                        missed += 1  # Increment the missed counter
                         SoundManager.play_sound(SOUND_WRONG)
                 elif event.key == pygame.K_BACKSPACE:
                     user_answer = user_answer[:-1]
@@ -115,8 +117,10 @@ def run_game():
         font = pygame.font.Font(None, 36)
         answer_surf = font.render(user_answer, True, (0, 0, 0))
         score_surf = font.render(f"Score: {score}", True, (0, 0, 0))
+        missed_surf = font.render(f"Missed: {missed}", True, (0, 0, 0))
         screen.blit(answer_surf, (20, SCREEN_HEIGHT - 40))
         screen.blit(score_surf, (SCREEN_WIDTH - 120, 20))
+        screen.blit(missed_surf, (SCREEN_WIDTH - 120, 60))
 
         pygame.display.flip()
 
